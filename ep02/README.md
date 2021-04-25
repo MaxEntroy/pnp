@@ -38,8 +38,8 @@ real	0m19.690s
 user	0m0.012s
 sys	0m3.264s
 ```
-bandwith(first): 2715254784/261/1000000 = 10M B/S(2715254784/21/1024/1024 = 9Mi B/S)
-bandwith(second): 2715254784/21/1000000 = 135M B/S(2715254784/21/1024/1024 = 129Mi B/S)
+- bandwith(first): 2715254784/261/1000000 = 10M B/S(2715254784/21/1024/1024 = 9Mi B/S)
+- bandwith(second): 2715254784/21/1000000 = 135M B/S(2715254784/21/1024/1024 = 129Mi B/S)
 
 ### 实验分析
 
@@ -56,14 +56,24 @@ q:exp1的数据和理论相去甚远，原因是什么？
 q:exp2和exp3的差异是什么？看起来好像都是从设备读？
 
 exp2是从/dev/zero读取，这个虽然理解为设备，但不是真实的设备。可以理解为从内存读
-<img width="500"  src="dd-nc.png"/>
+<img width="700"  src="dd-nc.png"/>
+
 看这个图很明显，cpu主要在kernel space，但同时没有卡在wa. cpu消费在kernel space是有其他消费的地方。
 下面我们来开数据在kernel space和user space交互的情况
-<img width="500"  src="dd-space.png"/>
+
+<img width="700"  src="dd-space.png"/>
+
 从这个图中我们可以看出
-1.client side，有4次数据在kernel/user之间进行交互，server side有2次，总共是6次。最后统计的时间，是这6次以及途中网络开销的时间
+1.client side，有4次数据在kernel/user之间进行交互，server side有2次，总共是6次。最后统计的时间，是这6次以及途中网络开销的时间(由于是localhost，没有网络开销)
 2.这里的kernel space/user space本质都是memory，只不过cpu访问不同的地址状态不一样
 
+下面我们来看exp3，首先看一下exp3的top运行情况
+<img width="700"  src="disk.png"/>
+
+基本现象和exp2一直，cpu主要消费在kernel，但是消费的点不一样，此时消费在wa。即等待io事件，这是因为第一次从磁盘读取数据，kernel space没有缓冲，所以读取很慢。
+第二次快的原因在于有缓冲。下面给出数据交互图
+
+<img width="700"  src="disk-space.png"/>
 
 参考
 [What do top %cpu abbreviations mean?](https://stackoverflow.com/questions/26004507/what-do-top-cpu-abbreviations-mean/26004656)
