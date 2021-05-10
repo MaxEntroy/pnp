@@ -1,1 +1,0 @@
-g++ -o "build64_release/version.os" -c -std=c++11 -g -fPIC -m64 -mcx16 -pipe -g -DNDEBUG -D_FILE_OFFSET_BITS=64 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -Ibuild64_release -I. -I/usr/include/python2.7 "build64_release/version.cpp"
