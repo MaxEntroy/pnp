@@ -8,18 +8,6 @@
 
 namespace pnp {
 
-namespace {
-
-int acceptOrDie(uint16_t port);
-
-}  // anonymous namespace
-
-void receive(const Options& opt) {}
-
-void transmit(const Options& opt) {}
-
-namespace {
-
 int acceptOrDie(uint16_t port) {
   // socket
   int listen_sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -59,6 +47,4 @@ int acceptOrDie(uint16_t port) {
   return perr_sfd;
 }
 
-}  // anonymous namespace
-
-}  // namespace pnp;
+}  // namespace pnp

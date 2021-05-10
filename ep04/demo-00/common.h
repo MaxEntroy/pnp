@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 namespace pnp {
 
@@ -16,9 +17,7 @@ inline void errHandling(const char* err_msg) {
   exit(EXIT_FAILURE);
 }
 
-void receive(const Options& opt);
-
-void transmit(const Options& opt);
+int acceptOrDie(uint16_t port);
 
 }  // namespace pnp
 
