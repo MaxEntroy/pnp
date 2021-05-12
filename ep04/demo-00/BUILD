@@ -1,20 +1,26 @@
 cc_library(
   name = "common",
   srcs = [
-    "common.cc"
+    "common.cc",
   ]
 )
 
-cc_library(
+cc_binary(
   name = "ttcp_cli",
   srcs = [
     "ttcp_client.cc"
+  ],
+  deps = [
+    ":common"
   ]
 )
 
-cc_library(
+cc_binary(
   name = "ttcp_serv",
   srcs = [
     "ttcp_server.cc"
+  ],
+  deps = [
+    ":common"
   ]
 )

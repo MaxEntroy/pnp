@@ -8,6 +8,22 @@
 
 namespace pnp {
 
+int tcpRead(int sfd, void* buf, int length) {
+  int nread = 0;
+  while (nread < length) {
+    int nr = read(sfd, static_cast<char*>(buf) + nread, length - nread);
+    if (nr > 0) {
+      nread += nr;
+    } else if (nr == 0) {
+      break;
+    } else if (errno != EINTR) {
+      perror("read");
+      break;
+    }
+  }
+  return nread;
+}
+
 int acceptOrDie(uint16_t port) {
   // socket
   int listen_sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -16,7 +32,7 @@ int acceptOrDie(uint16_t port) {
   }
 
   int yes = 1;
-  if (setsockopt(listen_sfd, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<void*>(&yes), sizeof(yes)) < 0) {
+  if (setsockopt(listen_sfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
     errHandling("setsockopt");
   }
 

@@ -14,6 +14,13 @@
 
 q:__attribute__ ((packed))用法？
 [__attribute__ ((packed))用法](https://blog.csdn.net/u014717398/article/details/55511197)
+定义通信使用的结构体时，应该考虑如下因素
+- 字节序. htonx/ntohx
+- 变量长度.考虑使用定长数据类型，比如uint32_t
+- 内存对齐.采用紧凑模式，避免编译器进行对齐优化
 
 q:char data[0]的用法？
 [char data[0] 用法及意义](https://blog.csdn.net/ligeforrent/article/details/48639277)
+
+q:void*做形参，实参是否需要cast?
+不需要。void*是泛型指针，可以接受任意类型指针。所以不需要转换
